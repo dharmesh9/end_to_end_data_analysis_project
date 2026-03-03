@@ -1,4 +1,4 @@
--- Q1. What is the total number of orders in the111 dataset?
+-- Q1. What is the total number of orders in the dataset?
 SELECT count(*) as total_orers 
 FROM t1;
 
@@ -106,10 +106,40 @@ GROUP BY 1
 ORDER BY 2 DESC;
 
 -- Q21. Which customers have made the highest number of purchases?
+SELECT customer_id,
+       COUNT(*) AS total_orders
+FROM t1
+GROUP BY customer_id
+ORDER BY total_orders DESC;
+
 -- Q22. Which customers have spent the most money overall (CLV)?
+SELECT customer_id,
+       SUM(purchase_amount) AS total_spent
+FROM t1
+GROUP BY customer_id
+ORDER BY total_spent DESC;
+
 -- Q23. Which customers have the highest average order value?
+SELECT customer_id,
+       ROUND(AVG(purchase_amount), 2) AS avg_order_value
+FROM t1
+GROUP BY customer_id
+ORDER BY avg_order_value DESC;
+
 -- Q24. Which customers buy the widest variety of categories?
+SELECT customer_id,
+       COUNT(DISTINCT category) AS unique_categories
+FROM t1
+GROUP BY customer_id
+ORDER BY unique_categories DESC;
+
 -- Q25. Which customers buy the widest variety of products?
+SELECT customer_id,
+       COUNT(DISTINCT item_purchased) AS unique_products
+FROM t1
+GROUP BY customer_id
+ORDER BY unique_products DESC;
+
 -- Q26. Which customers buy the widest variety of colors?
 -- Q27. Which customers buy the widest variety of sizes?
 -- Q28. Which customers always use discounts?
@@ -125,12 +155,6 @@ ORDER BY 2 DESC;
 -- Q38. Which customers repeatedly buy the same category?
 -- Q39. Which customers buy across multiple seasons?
 -- Q40. Which customers prefer specific shipping types?
-
--- Q41. Which products generate the most revenue?
--- Q42. Which products generate the least revenue?
--- Q43. Which products have the highest number of unique customers?
--- Q44. Which products have the highest discount usage?
--- Q45. Which products have the lowest discount usage?
 -- Q46. Which products are most popular among male customers?
 -- Q47. Which products are most popular among female customers?
 -- Q48. Which products are most popular among each age group?
