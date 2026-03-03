@@ -141,20 +141,48 @@ GROUP BY customer_id
 ORDER BY unique_products DESC;
 
 -- Q26. Which customers buy the widest variety of colors?
+SELECT customer_id, COUNT(DISTINCT color) AS unique_colors
+FROM t1
+GROUP BY customer_id
+ORDER BY unique_colors DESC;
+
 -- Q27. Which customers buy the widest variety of sizes?
+SELECT customer_id, COUNT(DISTINCT size) AS unique_sizes
+FROM t1
+GROUP BY customer_id
+ORDER BY unique_sizes DESC;
+
 -- Q28. Which customers always use discounts?
+SELECT customer_id, discount_applied
+FROM t1
+WHERE discount_applied = 'Yes' or 'YES';
+
 -- Q29. Which customers never use discounts?
+SELECT customer_id, discount_applied
+FROM t1
+WHERE discount_applied = 'No' or 'NO';
+
 -- Q30. Which customers give the highest average ratings?
--- Q31. Which customers give the lowest average ratings?
+SELECT customer_id, ROUND(AVG(CAST(review_rating AS DECIMAL(5,2))),2) AS highest_avg_rating
+FROM t1
+GROUP BY customer_id
+ORDER BY avg_rating DESC;
+
+-- Q31. Which customers have the lowest average ratings?
 -- Q32. Which customers are “New”, “Returning”, or “Loyal” based on purchase count?
--- Q33. Which customers are high-value but low-frequency buyers?
--- Q34. Which customers are low-value but high-frequency buyers?
--- Q35. Which customers are discount-sensitive but profitable?
+-- Q33. Which customers are high‑value but low‑frequency buyers?
+-- Q34. Which customers are low‑value but high‑frequency buyers?
+-- Q35. Which customers are discount‑sensitive but still profitable?
 -- Q36. Which customers switch categories between purchases?
 -- Q37. Which customers repeatedly buy the same product?
 -- Q38. Which customers repeatedly buy the same category?
 -- Q39. Which customers buy across multiple seasons?
 -- Q40. Which customers prefer specific shipping types?
+-- Q41. Which products generate the most revenue
+-- Q42. Which products generate the least revenue?
+-- Q43. Which products have the highest number of unique customers?
+-- Q44. Which products have the highest discount usage?
+-- Q45. Which products have the lowest discount usage?
 -- Q46. Which products are most popular among male customers?
 -- Q47. Which products are most popular among female customers?
 -- Q48. Which products are most popular among each age group?
