@@ -212,12 +212,52 @@ GROUP BY customer_id, previous_purchases
 HAVING SUM(purchase_amount) <= 30 AND previous_purchases >10
 ORDER BY total_spent DESC;
 
--- Q35. Which customers are discount-sensitive but still profitable?
+-- Q35. Which customers are discount-sensitive but profitable?
+SELECT customer_id, SUM(purchase_amount) AS total_spent,
+       AVG(CASE WHEN discount_applied='Yes' THEN 1 ELSE 0 END) AS discount_ratio
+FROM t1
+GROUP BY customer_id
+HAVING AVG(CASE WHEN discount_applied='Yes' THEN 1 ELSE 0 END) > 0.7
+   AND SUM(purchase_amount) > 30
+ORDER BY total_spent DESC;
+SELECT customer_id
+FROM t1
+GROUP BY customer_id
+HAVING COUNT(DISTINCT category) > 1;
+
 -- Q36. Which customers switch categories between purchases?
+SELECT customer_id
+FROM t1
+GROUP BY customer_id
+HAVING COUNT(DISTINCT category) > 1;
+
 -- Q37. Which customers repeatedly buy the same product?
+SELECT customer_id, item_purchased, COUNT(*) AS repeat_count
+FROM t1
+GROUP BY customer_id, item_purchased
+HAVING COUNT(*) > 1
+ORDER BY repeat_count DESC;
+
 -- Q38. Which customers repeatedly buy the same category?
+SELECT customer_id, category, COUNT(*) AS repeat_count
+FROM t1
+GROUP BY customer_id, category
+HAVING COUNT(*) > 1
+ORDER BY repeat_count DESC;
+
 -- Q39. Which customers buy across multiple seasons?
+SELECT customer_id, COUNT(DISTINCT season) AS seasons_count
+FROM t1
+GROUP BY customer_id
+HAVING COUNT(DISTINCT season) > 1
+ORDER BY seasons_count DESC;
+
 -- Q40. Which customers prefer specific shipping types?
+SELECT customer_id, shipping_type, COUNT(*) AS type_count
+FROM t1
+GROUP BY customer_id, shipping_type
+ORDER BY customer_id, type_count DESC;
+
 -- Q41. Which products generate the most revenue?
 -- Q42. Which products generate the least revenue?
 -- Q43. Which products have the highest number of unique customers?
