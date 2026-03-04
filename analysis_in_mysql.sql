@@ -134,8 +134,7 @@ GROUP BY customer_id
 ORDER BY unique_categories DESC;
 
 -- Q25. Which customers buy the widest variety of products?
-SELECT customer_id,
-       COUNT(DISTINCT item_purchased) AS unique_products
+SELECT customer_id, COUNT(DISTINCT item_purchased) AS unique_products
 FROM t1
 GROUP BY customer_id
 ORDER BY unique_products DESC;
@@ -165,20 +164,61 @@ WHERE discount_applied = 'No' or 'NO';
 -- Q30. Which customers give the highest average ratings?
 SELECT customer_id, ROUND(AVG(CAST(review_rating AS DECIMAL(5,2))),2) AS highest_avg_rating
 FROM t1
-GROUP BY customer_id
-ORDER BY avg_rating DESC;
+GROUP BY 1
+ORDER BY 2 DESC;
 
--- Q31. Which customers have the lowest average ratings?
+-- SELECT *
+-- FROM t1
+-- WHERE `review_rating` IS NULL
+--    OR `review_rating` NOT REGEXP '^[0-9]+(\\.[0-9]+)?$';
+
+SET SQL_SAFE_UPDATES = 0;
+UPDATE t1
+SET review_rating = CASE category
+    WHEN 'Clothing' THEN 3.1
+    WHEN 'Footwear' THEN 3.5
+    WHEN 'Accessories' THEN 4.1
+    WHEN 'Outerwear' THEN 4.3
+END
+WHERE category IN ('Clothing', 'Footwear', 'Accessories', 'Outerwear');
+SET SQL_SAFE_UPDATES = 1;
+
+-- Q31. Which customers give the lowest average ratings?
+SELECT customer_id, ROUND(AVG(review_rating),2) AS lowest_avg_rating
+FROM t1
+GROUP BY  1
+ORDER BY 2;
+
 -- Q32. Which customers are “New”, “Returning”, or “Loyal” based on purchase count?
--- Q33. Which customers are high‑value but low‑frequency buyers?
--- Q34. Which customers are low‑value but high‑frequency buyers?
--- Q35. Which customers are discount‑sensitive but still profitable?
+SELECT customer_id, previous_purchases,
+CASE 
+	WHEN previous_purchases = 1 THEN 'New'
+           WHEN previous_purchases BETWEEN 2 AND 5 THEN 'Returning'
+           ELSE 'Loyal'
+	END AS customer_type
+FROM t1;
+
+-- Q33. Which customers are high-value but low-frequency buyers?
+SELECT customer_id, SUM(purchase_amount) AS total_spent, previous_purchases AS total_orders
+FROM t1
+GROUP BY customer_id, previous_purchases
+HAVING SUM(purchase_amount) > 90 AND previous_purchases <= 2
+ORDER BY total_spent DESC;
+
+-- Q34. Which customers are low-value but high-frequency buyers?
+SELECT customer_id, SUM(purchase_amount) AS total_spent, previous_purchases AS total_orders
+FROM t1
+GROUP BY customer_id, previous_purchases
+HAVING SUM(purchase_amount) <= 30 AND previous_purchases >10
+ORDER BY total_spent DESC;
+
+-- Q35. Which customers are discount-sensitive but still profitable?
 -- Q36. Which customers switch categories between purchases?
 -- Q37. Which customers repeatedly buy the same product?
 -- Q38. Which customers repeatedly buy the same category?
 -- Q39. Which customers buy across multiple seasons?
 -- Q40. Which customers prefer specific shipping types?
--- Q41. Which products generate the most revenue
+-- Q41. Which products generate the most revenue?
 -- Q42. Which products generate the least revenue?
 -- Q43. Which products have the highest number of unique customers?
 -- Q44. Which products have the highest discount usage?
