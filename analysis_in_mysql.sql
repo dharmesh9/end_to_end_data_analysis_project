@@ -404,10 +404,36 @@ GROUP BY location, category
 ORDER BY location, category_count DESC;
 
 -- Q61. What percentage of orders used discounts?
+SELECT 
+    ROUND(100.0 * SUM(CASE WHEN discount_applied='yes' THEN 1 ELSE 0 END) / COUNT(*), 2) AS discount_percentage
+FROM t1;
+
 -- Q62. What percentage of revenue comes from discounted orders?
+SELECT 
+    ROUND(100.0 * SUM(CASE WHEN discount_applied='yes' THEN purchase_amount ELSE 0 END) / SUM(purchase_amount), 2) AS discount_revenue_percentage
+FROM t1;
+
 -- Q63. Which seasons have the highest discount usage?
+SELECT season, COUNT(*) AS discount_count
+FROM t1
+WHERE discount_applied='yes'
+GROUP BY 1
+ORDER BY 2 DESC;
+
 -- Q64. Which locations use discounts the most?
+SELECT location, COUNT(*) AS discount_count
+FROM t1
+WHERE discount_applied='yes'
+GROUP BY 1
+ORDER BY 2 DESC;
+
 -- Q65. Which genders use discounts the most?
+SELECT gender, COUNT(*) AS discount_count
+FROM t1
+WHERE discount_applied='yes'
+GROUP BY 1
+ORDER BY 2 DESC;
+
 -- Q66. Which age groups use discounts the most?
 -- Q67. Do discounted orders have lower or higher average ratings?
 -- Q68. Do discounted orders have lower or higher purchase amounts?
