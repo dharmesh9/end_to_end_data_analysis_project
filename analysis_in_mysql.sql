@@ -349,14 +349,59 @@ GROUP BY category
 ORDER BY discount_usage DESC;
 
 -- Q52. Which categories have the lowest discount usage?
+SELECT category, COUNT(*) AS discount_count
+FROM t1
+WHERE discount_applied = 'Yes'
+GROUP BY category
+ORDER BY discount_count ASC;
+
 -- Q53. Which categories have the highest number of unique customers?
+SELECT category, COUNT( DISTINCT customer_id) AS unique_customers
+FROM t1
+GROUP BY 1
+ORDER BY 2 DESC;
+
 -- Q54. Which categories have the highest average purchase amount?
+SELECT category, AVG(purchase_amount) AS average_purchase_amount
+FROM t1
+GROUP BY 1
+ORDER BY 2 DESC;
+
 -- Q55. Which categories have the lowest average purchase amount?
+SELECT category, AVG(purchase_amount) AS average_purchase_amount
+FROM t1
+GROUP BY 1
+ORDER BY 2;
+
 -- Q56. Which categories have the highest average rating?
+SELECT category,ROUND( AVG(review_rating),2 )AS average_rating
+FROM t1
+GROUP BY 1
+ORDER BY 2 DESC;
+
 -- Q57. Which categories have the lowest average rating?
+SELECT category,ROUND( AVG(review_rating),2 )AS average_rating
+FROM t1
+GROUP BY 1
+ORDER BY 2;
+
 -- Q58. Which categories are most popular among each gender?
+SELECT gender, category, COUNT(*) AS category_count
+FROM t1
+GROUP BY gender, category
+ORDER BY gender, category_count DESC;
+
 -- Q59. Which categories are most popular among each age group?
+SELECT age_group, category, COUNT(*) AS category_count
+FROM t1
+GROUP BY age_group, category
+ORDER BY age_group, category_count DESC;
+
 -- Q60. Which categories are most popular in each location?
+SELECT location, category, COUNT(*) AS category_count
+FROM t1
+GROUP BY location, category
+ORDER BY location, category_count DESC;
 
 -- Q61. What percentage of orders used discounts?
 -- Q62. What percentage of revenue comes from discounted orders?
