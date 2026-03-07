@@ -464,10 +464,35 @@ GROUP BY 1
 ORDER BY 2 DESC;
 
 -- Q71. Which subscription status gives the highest ratings?
+SELECT subscription_status, MAX(review_rating) AS highest_rating
+FROM t1
+GROUP BY 1
+ORDER BY 2 DESC;
+
 -- Q72. Which shipping type is used the most?
+SELECT shipping_type, COUNT(*) AS most_used_shipping_type
+FROM t1
+GROUP BY 1
+ORDER BY 2 DESC;
+
 -- Q73. Which shipping type generates the most revenue?
+SELECT shipping_type, SUM(purchase_amount) AS most_revenue
+FROM t1
+GROUP BY 1
+ORDER BY 2 DESC;
+
 -- Q74. Which shipping type has the highest average purchase amount?
+SELECT shipping_type, ROUND(AVG(purchase_amount),2) AS avg_purchase_amt
+FROM t1
+GROUP BY 1
+ORDER BY 2 DESC;
+
 -- Q75. Which shipping type has the highest average rating?
+SELECT shipping_type, ROUND(AVG(review_rating),2) AS avg_rating
+FROM t1
+GROUP BY shipping_type
+ORDER BY avg_rating DESC;
+
 -- Q76. Which seasons have the highest average purchase amount?
 -- Q77. Which seasons have the highest average rating?
 -- Q78. Which seasons have the highest discount usage?
