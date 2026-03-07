@@ -494,10 +494,35 @@ GROUP BY shipping_type
 ORDER BY avg_rating DESC;
 
 -- Q76. Which seasons have the highest average purchase amount?
+SELECT season, ROUND(AVG(purchase_amount),2)
+FROM t1
+GROUP BY 1
+ORDER BY 2 DESC;
+
 -- Q77. Which seasons have the highest average rating?
+SELECT season, ROUND(AVG(review_rating),2)
+FROM t1
+GROUP BY 1
+ORDER BY 2 DESC;
+
 -- Q78. Which seasons have the highest discount usage?
+SELECT season, COUNT(*) AS discount_usage
+FROM t1
+WHERE discount_applied = 'Yes' or 'No'
+GROUP BY season
+ORDER BY discount_usage DESC;
+
 -- Q79. Which seasons have the highest number of unique customers?
+SELECT season, COUNT(DISTINCT customer_id)
+FROM t1
+GROUP BY 1
+ORDER BY 2 DESC;
+
 -- Q80. Which seasons have the highest number of unique products purchased?
+SELECT season, COUNT(DISTINCT item_purchased)
+FROM t1
+GROUP BY 1
+ORDER BY 2 DESC;
 
 -- Q81. What are the top 3 products in each category using ranking?
 -- Q82. What are the top 3 products in each season using ranking?
