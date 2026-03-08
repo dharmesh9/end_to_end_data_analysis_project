@@ -525,10 +525,64 @@ GROUP BY 1
 ORDER BY 2 DESC;
 
 -- Q81. What are the top 3 products in each category using ranking?
+SELECT category, item_purchased, total_sales
+FROM (
+    SELECT category,
+           item_purchased,
+           COUNT(*) AS total_sales,
+           RANK() OVER (PARTITION BY category ORDER BY COUNT(*) DESC) AS rnk
+    FROM t1
+    GROUP BY 1,2
+) ranked
+WHERE rnk <= 3;
+
 -- Q82. What are the top 3 products in each season using ranking?
+SELECT season, item_purchased, total_sales
+FROM (
+        SELECT season, 
+               item_purchased,
+               COUNT(*) AS total_sales,
+               RANK() OVER (PARTITION BY season ORDER BY COUNT(*) DESC) AS rnk
+        FROM t1
+        GROUP BY 1, 2
+     ) AS ranked
+WHERE rnk <= 3;
+
 -- Q83. What are the top 3 products in each location using ranking?
+SELECT location, item_purchased, total_sales
+FROM (
+        SELECT location, 
+               item_purchased,
+               COUNT(*) AS total_sales,
+               RANK() OVER (PARTITION BY location ORDER BY COUNT(*) DESC) AS rnk
+        FROM t1
+        GROUP BY 1, 2
+     ) AS ranked
+WHERE rnk <= 3;
+
 -- Q84. What are the top 3 categories for each gender using ranking?
+SELECT gender, category, total_sales
+FROM (
+        SELECT gender, 
+               category,
+               COUNT(*) AS total_sales,
+               RANK() OVER (PARTITION BY gender ORDER BY COUNT(*) DESC) AS rnk
+        FROM t1
+        GROUP BY 1, 2
+     ) AS ranked
+WHERE rnk <= 3;
+
 -- Q85. What are the top 3 categories for each age group using ranking?
+SELECT age_group, category, total_sales
+FROM (
+        SELECT age_group, 
+               category,
+               COUNT(*) AS total_sales,
+               RANK() OVER (PARTITION BY age_group ORDER BY COUNT(*) DESC) AS rnk
+        FROM t1
+        GROUP BY 1, 2
+     ) AS ranked
+WHERE rnk <= 3;
 
 -- Q86. What is the revenue rank of each customer?
 -- Q87. What is the purchase frequency rank of each customer?
